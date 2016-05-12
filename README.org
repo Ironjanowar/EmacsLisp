@@ -1,0 +1,3 @@
+* Random Emacs Lisp programs
+
+¯\_(ツ)_/¯
