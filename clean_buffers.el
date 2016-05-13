@@ -8,7 +8,7 @@
     (setq buffers (buffer-list))
     (dotimes (i (length buffers))
       (setq buffer (pop buffers))
-      (if (not (string-equal (buffer-name buffer) "*scratch*")) (kill-buffer buffer) (message "Not killing!")))))
+      (if (not (string-equal (buffer-name buffer) "*scratch*")) (kill-buffer buffer) nil))))
 
 (defun clean-buffers() "Kills oll buffers except `scratch' and `Messages'"
        (interactive)
