@@ -4,6 +4,7 @@
 ;;; Code:
 (defun clean-buffers() "Kills oll buffers except `scratch' and `Messages'"
        (interactive)
+       (yes-or-no-p "Do you really want to clean all buffers? ")
        (let (buffer buffers)
          (setq buffers (buffer-list))
          (dotimes (i (length buffers))
