@@ -15,5 +15,5 @@
        (if (yes-or-no-p "Do you really want to clean all buffers? ")
            (kill-buffers) nil))
 
-(provide 'clean_buffers)
+(provide 'clean-buffers)
 ;;; clean_buffers.el ends here
