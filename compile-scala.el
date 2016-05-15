@@ -17,5 +17,9 @@
   (sleep-for 1)
   (term-send-raw-string (concat "scala " scala-file "\n")))
 
+(if (lookup-key (current-global-map) "\C-c\C-s")
+    (message "You may bind 'send-scala-te-term' yourself")
+  (global-key-binding (kbd "C-c C-s") 'send-scala-to-term))
+
 (provide 'compile-scala)
 ;;; compile-scala.el ends here
