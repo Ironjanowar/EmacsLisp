@@ -1,5 +1,5 @@
 ;;; package -- None
-;;; Commentary:
+;;; Commentary: Kill all buffers except `scratch' (asks first)
 
 ;;; Code:
 
@@ -10,7 +10,7 @@
       (setq buffer (pop buffers))
       (if (not (string-equal (buffer-name buffer) "*scratch*")) (kill-buffer buffer) nil))))
 
-(defun clean-buffers() "Kills oll buffers except `scratch' and `Messages'"
+(defun clean-buffers()
        (interactive)
        (if (yes-or-no-p "Do you really want to clean all buffers? ")
            (kill-buffers) nil))
