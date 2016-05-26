@@ -7,6 +7,7 @@
 ;;; Code:
 
 (require 'multi-term)
+(require 'hydra)
 
 (defun string-ends-with (string suffix)
   "Return t if STRING ends with SUFFIX ."
@@ -16,13 +17,13 @@
 
 (defun send-scala-to-term()
   (interactive)
-  (let (scala-file)
-    (setq scala-file (buffer-file-name (current-buffer)))
+  (let ((scala-file (buffer-file-name (current-buffer))))
     (if (string-ends-with scala-file ".scala")
-        ((multi-term-dedicated-open)
-         (multi-term-dedicated-select)
-         (sleep-for 1)
-         (term-send-raw-string (concat "scala " scala-file "\n")))
+        (progn
+          (multi-term-dedicated-open)
+          (multi-term-dedicated-select)
+          (sleep-for 1)
+          (term-send-raw-string (concat "scala " scala-file "\n")))
       (message "Not a Scala file"))))
 
 (defun open-scala-REPL()
@@ -36,8 +37,11 @@
     (message "You may bind 'send-scala-to-term' yourself")
   (global-set-key
    (kbd "C-c C-s")
-   (defhydra hydra-window()
+   (defhydra hydra-window(:color green
+                                 :columns 2
+                                 :exit t)
      "Scala options"
+     
      ("o" open-scala-REPL "Open Scala REPL")
      ("c" send-scala-to-term "Compile current Scala file in terminal")
      ("q" nil "Cancel"))))
