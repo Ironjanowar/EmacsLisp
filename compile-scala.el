@@ -1,5 +1,6 @@
-;;; package -- None
-;;; Commentary: Compiles and executes scala file
+;;; compile-scala -- Do stuff with your scala files
+;;; Commentary:
+;; Compiles and executes scala file
 ;; How to: Execute the command `send-scala-to-term' in a .scala buffer
 ;; Dependencies: `multi-term'
 
@@ -7,19 +8,39 @@
 
 (require 'multi-term)
 
-(defvar scala-file) ;; Avoids free variable warning
+(defun string-ends-with (string suffix)
+  "Return t if STRING ends with SUFFIX ."
+  (and (string-match (rx-to-string `(: ,suffix eos) t)
+                     string)
+       t))
 
 (defun send-scala-to-term()
   (interactive)
-  (setq scala-file (buffer-file-name (current-buffer)))
+  (let (scala-file)
+    (setq scala-file (buffer-file-name (current-buffer)))
+    (if (string-ends-with scala-file ".scala")
+        ((multi-term-dedicated-open)
+         (multi-term-dedicated-select)
+         (sleep-for 1)
+         (term-send-raw-string (concat "scala " scala-file "\n")))
+      (message "Not a Scala file"))))
+
+(defun open-scala-REPL()
+  (interactive)
   (multi-term-dedicated-open)
   (multi-term-dedicated-select)
   (sleep-for 1)
-  (term-send-raw-string (concat "scala " scala-file "\n")))
+  (term-send-raw-string "scala\n"))
 
 (if (lookup-key (current-global-map) "\C-c\C-s")
-    (message "You may bind 'send-scala-te-term' yourself")
-  (global-key-binding (kbd "C-c C-s") 'send-scala-to-term))
+    (message "You may bind 'send-scala-to-term' yourself")
+  (global-set-key
+   (kbd "C-c C-s")
+   (defhydra hydra-window()
+     "Scala options"
+     ("o" open-scala-REPL "Open Scala REPL")
+     ("c" send-scala-to-term "Compile current Scala file in terminal")
+     ("q" nil "Cancel"))))
 
 (provide 'compile-scala)
 ;;; compile-scala.el ends here
